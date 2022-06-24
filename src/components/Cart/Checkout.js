@@ -46,6 +46,12 @@ const Checkout = (props) => {
     if (!formIsValid) return;
 
     // Submit cart data
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postal: enteredPostal,
+    });
   };
 
   const nameControlClasses = `${classes.control} ${
@@ -69,24 +75,30 @@ const Checkout = (props) => {
       <div className={nameControlClasses}>
         <label htmlFor='name'>Your Name</label>
         <input type='text' id='name' ref={nameInputRef} />
-        {!formInputValidity.name && <p>Please enter a valid name!</p>}
+        {!formInputValidity.name && (
+          <p class='error'>Please enter a valid name!</p>
+        )}
       </div>
       <div className={streetControlClasses}>
         <label htmlFor='street'>Street</label>
         <input type='text' id='street' ref={streetInputRef} />
-        {!formInputValidity.street && <p>Please enter a valid street!</p>}
+        {!formInputValidity.street && (
+          <p class='error'>Please enter a valid street!</p>
+        )}
       </div>
       <div className={postalControlClasses}>
         <label htmlFor='postal'>Postal Code</label>
         <input type='text' id='postal' ref={postalInputRef} />
         {!formInputValidity.postal && (
-          <p>Please enter a valid postal. 5 characters long!</p>
+          <p class='error'>Please enter a valid postal. 5 characters long!</p>
         )}
       </div>
       <div className={cityControlClasses}>
         <label htmlFor='city'>City</label>
         <input type='text' id='city' ref={cityInputRef} />
-        {!formInputValidity.city && <p>Please enter a valid city!</p>}
+        {!formInputValidity.city && (
+          <p class='error'>Please enter a valid city!</p>
+        )}
       </div>
       <div className={classes.actions}>
         <button type='button' onClick={props.onCancel}>

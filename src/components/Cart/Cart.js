@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 
 import Modal from '../UI/Modal';
 import CartItem from './CartItem';
@@ -24,6 +24,32 @@ const Cart = (props) => {
   const orderHandler = () => {
     setIsCheckout(true);
   };
+
+  const submitOrderHandler = useCallback(
+    async (userData) => {
+      try {
+        const response = await fetch(
+          'https://react-http-be6eb-default-rtdb.firebaseio.com/orders.json',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              user: userData,
+              orderItems: cartCtx.items,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+
+        console.log('New Order Successfully Added!');
+      } catch (error) {
+        console.error('error::', error);
+      }
+    },
+    [cartCtx.items]
+  );
 
   const cartItems = (
     <ul className={classes['cart-items']}>
@@ -60,7 +86,9 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onClose} />}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
+      )}
       {!isCheckout && modalActions}
     </Modal>
   );
