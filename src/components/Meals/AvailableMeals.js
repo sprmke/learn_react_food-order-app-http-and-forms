@@ -37,9 +37,9 @@ const AvailableMeals = () => {
       setMeals(loadedMeals);
     } catch (error) {
       setHttpError(error.message);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
